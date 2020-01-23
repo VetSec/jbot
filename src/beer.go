@@ -4,24 +4,15 @@
 
 package main
 
-import (
-	"fmt"
-	"math/rand"
-	"net/url"
-	"regexp"
-	"strings"
-	"time"
-)
-
 func init() {
-	COMMANDS["beer"] = &Command{cmdBeer,
-		"quench your thirst",
-		"https://www.beeradvocate.com/",
-		"!beer <beer>",
-		nil}
+	/*COMMANDS["beer"] = &Command{cmdBeer,
+	"quench your thirst",
+	"https://www.beeradvocate.com/",
+	"!beer <beer>",
+	nil}*/
 }
 
-func cmdBeer(r Recipient, chName string, args []string) (result string) {
+/*func cmdBeer(r Recipient, chName string, args []string) (result string) {
 	bType := "search"
 	theUrl := fmt.Sprintf("%ssearch/?qt=beer&q=", COMMANDS["beer"].How)
 	if len(args) < 1 {
@@ -133,4 +124,4 @@ func cmdBeer(r Recipient, chName string, args []string) (result string) {
 	}
 
 	return
-}
+}*/

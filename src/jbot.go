@@ -60,7 +60,6 @@ import (
 	"math/rand"
 	"net"
 	"net/http"
-	"net/http/cookiejar"
 	"net/smtp"
 	"net/url"
 	"os"
@@ -75,9 +74,7 @@ import (
 	"strings"
 	"syscall"
 	"time"
-)
 
-import (
 	"github.com/daneharrigan/hipchat"
 	"github.com/google/shlex"
 	"github.com/nlopes/slack"
@@ -113,10 +110,10 @@ var CONFIG = map[string]string{
 	"byPassword":           "",
 	"channelsFile":         "/var/tmp/jbot.channels",
 	"countersFile":         "/var/tmp/jbot.counters",
-	"configFile":           "/etc/jbot.conf",
+	"configFile":           "jbot.conf",
 	"debug":                "no",
 	"emailDomain":          "",
-	"fullName":             "",
+	"fullName":             "garybot",
 	"giphyApiKey":          "",
 	"hcControlChannel":     "",
 	"hcJabberID":           "",
@@ -125,11 +122,11 @@ var CONFIG = map[string]string{
 	"hcService":            "",
 	"jiraPassword":         "",
 	"jiraUser":             "",
-	"mentionName":          "",
+	"mentionName":          "garybot",
 	"openweathermapApiKey": "",
 	"opsgenieApiKey":       "",
-	"slackID":              "",
-	"slackService":         "",
+	"slackID":              "garybot",
+	"slackService":         "vetsec.slack.com",
 	"slackToken":           "",
 	"SMTP":                 "",
 	"timezonedbApiKey":     "",
@@ -181,7 +178,7 @@ var URLS = map[string]string{
 	"jbot":    "https://github.com/jschauma/jbot/",
 	"parrots": "http://localhost/parrots",
 	"praise":  "http://localhost/praise",
-	"pwgen":   "https://www.netmeister.org/pwgen/"
+	"pwgen":   "https://www.netmeister.org/pwgen/",
 	"speb":    "http://localhost/speb",
 	"trivia":  "http://localhost/trivia",
 }
@@ -2468,7 +2465,7 @@ func cmdThrottle(r Recipient, chName string, args []string) (result string) {
 	return
 }
 
-func cmdTime(r Recipient, chName string, args []string) (result string) {
+/*func cmdTime(r Recipient, chName string, args []string) (result string) {
 	timezones := []string{"Asia/Taipei", "Asia/Calcutta", "UTC", "EST5EDT", "PST8PDT"}
 	if len(args) > 0 {
 		timezones = args
@@ -2503,7 +2500,7 @@ func cmdTime(r Recipient, chName string, args []string) (result string) {
 	}
 
 	return
-}
+}*/
 
 func cmdTld(r Recipient, chName string, args []string) (result string) {
 	input := args
@@ -2891,7 +2888,7 @@ func cmdVu(r Recipient, chName string, args []string) (result string) {
 	return
 }
 
-func cmdWeather(r Recipient, chName string, args []string) (result string) {
+/*func cmdWeather(r Recipient, chName string, args []string) (result string) {
 	var where string
 	apikey := CONFIG["openweathermapApiKey"]
 	if len(apikey) < 1 {
@@ -3005,7 +3002,7 @@ func cmdWeather(r Recipient, chName string, args []string) (result string) {
 	gmapLink := fmt.Sprintf("https://www.google.com/maps/@%f,%f,12z", w.Coord.Lat, w.Coord.Lon)
 	result += fmt.Sprintf("Coordinates: <%s|[%.3f, %.3f]>\n", gmapLink, w.Coord.Lat, w.Coord.Lon)
 	return
-}
+}*/
 
 func tempStringFromKelvin(t float64) (s string) {
 	c := t - 273.15
@@ -3290,7 +3287,7 @@ func cmdWiki(r Recipient, chName string, args []string) (result string) {
 	return
 }
 
-func cmdWtf(r Recipient, chName string, args []string) (result string) {
+/*func cmdWtf(r Recipient, chName string, args []string) (result string) {
 	if len(args) < 1 {
 		result = "Usage: " + COMMANDS["wtf"].Usage
 		return
@@ -3353,7 +3350,7 @@ func cmdWtf(r Recipient, chName string, args []string) (result string) {
 	}
 
 	return
-}
+}*/
 
 func cmdXkcd(r Recipient, chName string, args []string) (result string) {
 	latest := false
@@ -3631,11 +3628,11 @@ func createCommands() {
 			"!throttle <something> <seconds> -- set throttle for <something> to <seconds>\n" +
 			"Note: I will happily let you set throttles I don't know or care about.",
 		nil}
-	COMMANDS["time"] = &Command{cmdTime,
-		"show the current time",
-		"builtin",
-		"!time [TZ]",
-		nil}
+	/*COMMANDS["time"] = &Command{cmdTime,
+	"show the current time",
+	"builtin",
+	"!time [TZ]",
+	nil}*/
 	COMMANDS["tld"] = &Command{cmdTld,
 		"show what TLD is",
 		"whois -h whois.iana.org",
@@ -3687,11 +3684,11 @@ func createCommands() {
 		"https://www.kb.cert.org/vuls/id/",
 		"!vu <num>",
 		nil}
-	COMMANDS["weather"] = &Command{cmdWeather,
-		"show weather information",
-		"https://api.openweathermap.org/data/2.5/",
-		"!weather <location>",
-		nil}
+	/*COMMANDS["weather"] = &Command{cmdWeather,
+	"show weather information",
+	"https://api.openweathermap.org/data/2.5/",
+	"!weather <location>",
+	nil}*/
 	COMMANDS["whois"] = &Command{cmdWhois,
 		"show whois information",
 		"whois(1)",
@@ -3707,11 +3704,11 @@ func createCommands() {
 		"https://en.wikipedia.org/w/api.php?action=opensearch&redirects=resolve&search=",
 		"!wiki <something>",
 		nil}
-	COMMANDS["wtf"] = &Command{cmdWtf,
-		"decrypt acronyms",
-		"ywtf(1)",
-		"!wtf <term>",
-		[]string{"ywtf"}}
+	/*COMMANDS["wtf"] = &Command{cmdWtf,
+	"decrypt acronyms",
+	"ywtf(1)",
+	"!wtf <term>",
+	[]string{"ywtf"}}*/
 	COMMANDS["xkcd"] = &Command{cmdXkcd,
 		"find an xkcd for you",
 		"https://relevantxkcd.appspot.com/",
@@ -4190,7 +4187,7 @@ func getSortedKeys(hash map[string]int, rev bool) (sorted []string) {
  *   set the given 'key=value' headers
  */
 func getURLContents(givenURL string, args map[string]string) (data []byte) {
-	verbose(3, "Fetching %s...", givenURL)
+	/*verbose(3, "Fetching %s...", givenURL)
 
 	u, err := url.Parse(givenURL)
 	if err != nil {
@@ -4284,7 +4281,7 @@ func getURLContents(givenURL string, args map[string]string) (data []byte) {
 		fmt.Fprintf(os.Stderr, "Unable to read body of '%s': %s\n", givenURL, err)
 		return
 	}
-
+	*/
 	return
 }
 

@@ -660,10 +660,10 @@ func chatterMisc(msg string, ch *Channel, r Recipient) (result string) {
 		return
 	}
 
-	beer := regexp.MustCompile(`(?i)^b[ie]er( me)?$`)
+	/*beer := regexp.MustCompile(`(?i)^b[ie]er( me)?$`)
 	if beer.MatchString(msg) {
 		result = cmdBeer(r, ch.Name, []string{})
-	}
+	}*/
 
 	ed := regexp.MustCompile(`(?i)(editor war)|(emacs.*vi)|(vi.*emacs)|((best|text) (text[ -]?)?editor)`)
 	if ed.MatchString(msg) && !isThrottled("ed", ch) {
@@ -996,11 +996,11 @@ func processChatter(r Recipient, msg string, forUs bool) {
 			return
 		}
 
-		chitchat = chatterPhish(msg, ch, r)
+		/*chitchat = chatterPhish(msg, ch, r)
 		if len(chitchat) > 0 {
 			reply(r, chitchat)
 			return
-		}
+		}*/
 
 		chitchat = chatterAtnoyance(msg, ch, r)
 		if (len(chitchat) > 0) && ch.Toggles["atnoyance"] && !isThrottled("atnoyance", ch) {
